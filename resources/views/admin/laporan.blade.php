@@ -19,7 +19,7 @@
                                     </div>
                                     <!-- /.col -->
                                     <div class="col-sm-4 invoice-col" style="padding-left: 1em;">
-                                        E-restaurant
+                                        E-UMKM
                                         <address>
                                             795 Freedom Ave, Suite 600
                                             <br>New York, CA 94107

@@ -27,18 +27,18 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
         /**
          * Routes Customer
          */
-        Route::get('/meja/{meja}', 'PesanController@show')->name('pesan.show');
+        Route::get('/page/{meja}', 'PesanController@show')->name('pesan.show');
         Route::post('/customer/setupSession','PesanController@setupSession')->name('pesan.setupSession');
         Route::group(['middleware' => ['customerSessionCheck']],function(){
-            Route::get('/meja/{meja}/menu', 'PesanController@menu')->name('pesan.menu');
-            Route::get('/meja/{meja}/menu/{id}', 'PesanController@addMenuCart')->name('pesan.add');
-            Route::get('/meja/{meja}/keranjang', 'PesanController@cartshow')->name('pesan.cartshow');
-            Route::get('/meja/{meja}/keranjang/checkout', 'PesanController@checkOut')->name('pesan.checkout');
-            Route::get('meja/{meja}/keranjang/checkout/paid', 'PesanController@checkOutpaid')->name('pesan.checkoutpaid');
-            Route::delete('/meja/{meja}/keranjang/{id}', 'PesanController@cartdelete')->name('pesan.cartdelete');
-            Route::get('/meja/{meja}/flush', 'PesanController@flush')->name('pesan.flush');
-            Route::get('/meja/{meja}/bayar', 'PesanController@test')->name('pesan.test');
-            Route::post('/meja/{meja}/bayar', 'PesanController@bayar')->name('pesan.bayar');
+            Route::get('/page/{meja}/menu', 'PesanController@menu')->name('pesan.menu');
+            Route::get('/page/{meja}/menu/{id}', 'PesanController@addMenuCart')->name('pesan.add');
+            Route::get('/page/{meja}/keranjang', 'PesanController@cartshow')->name('pesan.cartshow');
+            Route::get('/page/{meja}/keranjang/checkout', 'PesanController@checkOut')->name('pesan.checkout');
+            Route::get('page/{meja}/keranjang/checkout/paid', 'PesanController@checkOutpaid')->name('pesan.checkoutpaid');
+            Route::delete('/page/{meja}/keranjang/{id}', 'PesanController@cartdelete')->name('pesan.cartdelete');
+            Route::get('/page/{meja}/flush', 'PesanController@flush')->name('pesan.flush');
+            Route::get('/page/{meja}/bayar', 'PesanController@test')->name('pesan.test');
+            Route::post('/page/{meja}/bayar', 'PesanController@bayar')->name('pesan.bayar');
             
         });
 

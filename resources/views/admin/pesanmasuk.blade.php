@@ -22,7 +22,7 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">Nama Pemesan</th>
-                                    <th scope="col">No Meja</th>
+                                    <th scope="col">No Pesanan</th>
                                     <th scope="col">Status Pesanan</th>
                                     <th scope="col">Status Pembayaran</th>
                                     <th scope="col">Total price</th>
