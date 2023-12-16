@@ -5,9 +5,9 @@
                 <div class="row d-flex flex-wrap justify-content-center">
                     <div class="col-lg-4 col-sm-6 pb-3">
                         <div class="footer-menu">
-                            <img src="{{asset('img/logooooo.png')}}" alt="logo">
-                            <p>Nisi, purus vitae, ultrices nunc. Sit ac sit suscipit hendrerit. Gravida massa volutpat aenean odio erat nullam fringilla.</p>
-                        </div>
+                            {{-- <img src="{{ asset('img/logo.png') }}" alt="logo" style="max-width: 300px;"> --}}
+                            <p>Memudahkan UMKM dalam melakukan pemesanan tanpa antri.</p>
+                          </div>
                     </div>
                     <div class="col-lg-4 col-sm-6 pb-3">
                         <div class="footer-menu contact-item">
@@ -25,7 +25,7 @@
         <div class="row d-flex flex-wrap justify-content-end">
             <div class="col-md-4 col-sm-6 ">
                 <div class="copyright">
-                    <p>pesanan.</p>
+                    {{-- <p>pesanan.</p> --}}
                 </div>
             </div>
         </div>
@@ -44,22 +44,17 @@
 
             snap.pay('{{ $snapToken }}', {
                 // Optional
-                onSuccess: function(result) {
-                    /* You may add your own js here, this is just example */
-                    console.log(result)
-                },
-                // Optional
-                onPending: function(result) {
-                    /* You may add your own js here, this is just example */
-                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                    console.log(result)
-                },
-                // Optional
-                onError: function(result) {
-                    /* You may add your own js here, this is just example */
-                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                    console.log(result)
-                }
+                onSuccess: function(result){
+                        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                    },
+                    // Optional
+                    onPending: function(result){
+                        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                    },
+                    // Optional
+                    onError: function(result){
+                      document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                    }
             });
         });
     </script>

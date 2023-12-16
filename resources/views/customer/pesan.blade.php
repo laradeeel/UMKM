@@ -9,8 +9,8 @@
                 <div class="col-md-6">
                     <div class="row justify-content-center text-md-center">
                         <br>
-                        <h3>Selamat datang di pesanan online</h3>
-                        <h4>beritahu kami namamu</h4>
+                        <h3>Selamat datang di Dand'ys Food</h3>
+                        <h4>Beritahu kami namamu</h4>
                         <br>
                     </div>
                     <form method="POST" action="{{ route('pesan.setupSession') }}">
@@ -21,10 +21,10 @@
                             <label for="namaCus" class="form-label">Nama Pemesan</label>
                             <input type="text"class="form-control"id="namaCus" name="namaCus"/>
                             <div id="namaCusHelp" class="form-text">
-                                We'll never share your name with anyone else.
+                                Isikan nama dengan benar untuk kelancaran dalam transaksi.
                             </div>
                         </div>
-                        <button id="btn-login" type="submit" class="btn btn-primary">Submit</button>
+                        <button id="btn-login" type="submit" class="btn btn-primary">Kirim</button>
                     </form>
                 </div>
             </div>

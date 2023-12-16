@@ -24,23 +24,22 @@
                         @php $total = 0 @endphp
                         @if(session('cart'))
                             @foreach(session('cart') as $id => $details)
-                                <tr rowId="{{ $id }}">
-                                    <td data-th="Product">{{ $details['name'] }}</td>
-                                    <td data-th="quantity">{{ $details['quantity'] }}</td>
-                                    <td data-th="Price">{{ $details['price'] }}</td>
-                                    <td data-th="diskon">{{ $details['discount'] }}</td>
-                                    <td data-th="total">{{ $details['subtotal']}}</td>
-                                    <td class="actions">
-                                        <form action="{{ route('pesan.cartdelete', ['meja' => session('idMeja'), 'id' => $id]) }}" method="post">
-                                            @csrf
-                                            @method('delete')
-
-                                            <button type="submit" class="delete-product">
-                                                <svg class="close" width="2em" height="2em">&nbsp;<use xlink:href="#close"></use></svg>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
+                            <tr rowId="{{ $id }}">
+                                <td data-th="Product">{{ $details['name'] }}</td>
+                                <td data-th="quantity">{{ $details['quantity'] }}</td>
+                                <td data-th="Price">Rp. {{ $details['price'] }}</td>
+                                <td data-th="diskon">Rp. {{ $details['discount'] }}</td>
+                                <td data-th="total">Rp. {{ $details['subtotal'] }}</td>
+                                <td class="actions">
+                                  <form action="{{ route('pesan.cartdelete', ['meja' => session('idMeja'), 'id' => $id]) }}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="delete-product">
+                                      <svg class="close" width="2em" height="2em">&nbsp;<use xlink:href="#close"></use></svg>
+                                    </button>
+                                  </form>
+                                </td>
+                              </tr>
                             @endforeach
                         @endif
                         </tbody>

@@ -9,6 +9,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Midtrans\Config;
 use Midtrans\Snap;
+use App\Veritrans\Veritrans;
 
 class PesanController extends Controller
 {
@@ -94,7 +95,7 @@ class PesanController extends Controller
 
     // Override auto increment order
     if (Order::all()->isEmpty()) {
-        $Order->id = 1;
+        $Order->id = rand();
     } else {
         $maxID = $Order->max('id');
         $Order->id = $maxID + 1;
@@ -143,7 +144,7 @@ class PesanController extends Controller
 
     $params = array(
         'transaction_details' => array(
-            'order_id' => $data->id,
+            'order_id' => rand(),
             'gross_amount' => $data->total_price,
         ),
         'customer_details' => array(
@@ -156,9 +157,26 @@ class PesanController extends Controller
     // Update the Order with the snap_token value
     $data->snap_token = $snapToken;
     $data->save();
+    
 
     return view('customer.checkout', compact('snapToken', 'data'));
 }
+
+    public function checkOutpaid(Request $request, $checkOut)
+    {
+        $order = Order::where('snap_token', $checkOut)->first();
+
+        if (!$order) {
+            // Order not found, handle the error or return an appropriate response
+            return response('Order not found', 404);
+        }
+
+        $order->payment_status = 'paid';
+        $order->save();
+
+        return response('Payment status updated', 200);
+        return view('customer.checkoutpaid', compact('snapToken', 'data'));
+    }
 
     public function setupSession(Request $request)
     {
@@ -176,5 +194,6 @@ class PesanController extends Controller
         return redirect()->route('pesan.menu', $request->input('id'));
     }
 
+    
        
 }
