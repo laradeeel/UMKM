@@ -7,9 +7,11 @@ use App\Models\Menu;
 use App\Models\MenuOrder;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Midtrans\Config;
 use Midtrans\Snap;
 use App\Veritrans\Veritrans;
+use facade\http_response_code;
 
 class PesanController extends Controller
 {
@@ -95,7 +97,7 @@ class PesanController extends Controller
 
     // Override auto increment order
     if (Order::all()->isEmpty()) {
-        $Order->id = rand();
+        $Order->id = rand(0, 9999);
     } else {
         $maxID = $Order->max('id');
         $Order->id = $maxID + 1;
@@ -164,6 +166,13 @@ class PesanController extends Controller
 
     public function checkOutpaid(Request $request, $checkOut)
     {
+        $auth = base64_encode(env('MIDTRANS_SERVER_KEY'));
+
+        $respone = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Basic $auth'
+        ])->get("http://api.sandbox.midtrans.com/v2/$request->order_id/status");
+
         $order = Order::where('snap_token', $checkOut)->first();
 
         if (!$order) {

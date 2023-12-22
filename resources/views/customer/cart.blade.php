@@ -4,79 +4,159 @@
 <section id="latest-blog" class="padding-large">
     <div class="container">
         <div class="row">
-            <div class="display-header d-flex justify-content-between pb-3">
-                <h2 class="display-7 text-dark text-uppercase">Keranjang Makanan</h2>
+            <div class=" d-flex justify-content-between">
+                <h2 class=" text-dark text-uppercase">Keranjang Makanan</h2>
             </div>
-            <div class="col-lg-2 col-sm-6 pb-3">
+            <div class="w-full">
                 <div class="footer-menu text-uppercase">
-                    <table id="ManageMenuTable" class="table table-striped " style="width:100%">
-                        <thead>
-                        <tr>
-                            <th scope="col">Nama</th>
-                            <th scope="col">Qty</th>
-                            <th scope="col">Harga</th>
-                            <th scope="col">Diskon</th>
-                            <th scope="col">sub total</th>
-                            <th scope="col">hapus</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @php $total = 0 @endphp
-                        @if(session('cart'))
-                            @foreach(session('cart') as $id => $details)
-                            <tr rowId="{{ $id }}">
-                                <td data-th="Product">{{ $details['name'] }}</td>
-                                <td data-th="quantity">{{ $details['quantity'] }}</td>
-                                <td data-th="Price">Rp. {{ $details['price'] }}</td>
-                                <td data-th="diskon">Rp. {{ $details['discount'] }}</td>
-                                <td data-th="total">Rp. {{ $details['subtotal'] }}</td>
-                                <td class="actions">
-                                  <form action="{{ route('pesan.cartdelete', ['meja' => session('idMeja'), 'id' => $id]) }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="delete-product">
-                                      <svg class="close" width="2em" height="2em">&nbsp;<use xlink:href="#close"></use></svg>
-                                    </button>
-                                  </form>
-                                </td>
-                              </tr>
-                            @endforeach
-                        @endif
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>Total : </td>
-                            @if(session('cart'))
-                            @php
-                                $cart = session()->get('cart');
-                                $totalPrice = 0;
-                                foreach ($cart as $item) {
-                                    $totalPrice += $item['subtotal'];
-                                }
-                            @endphp
-                            <td colspan="4" class="text-right">{{ $totalPrice }}</td>
-                            {{-- DEPRECATED --}}
-                            {{-- @foreach(session('cart') as $id => $details)
-                                <td colspan="4" class="text-right">{{ $details['total'] }}</td>
-                                @break
-                            @endforeach --}}
-                            @endif
-                        </tr>
-                        <tr>
-                            <td colspan="4" class="text-right">
-                                <a href="{{ route('pesan.menu',['meja' => session('idMeja')])}}" class="btn btn-secondary"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
-                            <td class="actions text-right"colspan="2">
-                                <a href="{{ route('pesan.flush',['meja' => session('idMeja')])}}" class="btn btn-secondary"><i class="fa fa-angle-left"></i> Clear all</a></a>
-                            </td>
-                            <td class="actions text-right">
-                                <a href="{{ route('pesan.checkout',['meja' => session('idMeja')]) }}" class="btn btn-primary"><i class="fa fa-angle-left"></i> Checkout</a></a>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
+                    <!--
+  Heads up! 👋
+
+  Plugins:
+    - @tailwindcss/forms
+-->
+<section>
+    <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+      <div class="mx-auto max-w-3xl">
+        <header class="text-center">
+          <h1 class="text-xl font-bold text-gray-900 sm:text-3xl">Keranjang Makanan</h1>
+        </header>
+        @php $total = 0 @endphp
+        @if(session('cart'))
+        @foreach(session('cart') as $id => $details)
+        <div class="mt-8">
+          <ul class="space-y-4">
+            <li class="flex items-center gap-4">
+              
+              <div>
+                <h3 class="text-sm text-gray-900">{{ $details['name'] }}</h3>
+  
+                <dl class="mt-0.5 space-y-px text-[10px] text-gray-600">
+                  <div>
+                    <dt class="inline">Harga:</dt>
+                    <dd class="inline">Rp.{{ number_format($details['price'], 0, ',', '.') }}</dd>
+                  </div>
+  
+                  <div class="">
+                    <dt class="inline">Diskon:</dt>
+                    <dd class="inline">Rp.{{ number_format($details['discount'], 0, ',', '.') }}</dd>
+                  </div>
+
+                  <div class="">
+                    <dt class="inline">Sub Total:</dt>
+                    <dd class="inline">Rp.{{ number_format($details['subtotal'], 0, ',', '.') }}</dd>
+                  </div>
+                  
+                </dl>
+              </div>
+  
+              <div class=" flex flex-1 items-center justify-end gap-2">
+                <form>
+                  <label for="Line1Qty" class="sr-only"> Jumlah </label>
+                  
+  
+                  <input
+                    type="number"
+                    min="1"
+                    value="{{ $details['quantity'] }}"
+                    id="Line1Qty"
+                    class="h-8 w-12 rounded border-gray-200 bg-gray-50 p-0 text-center text-xs text-gray-600 [-moz-appearance:_textfield] focus:outline-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+                  />
+                </form>
+                
+                
+  
+                <form action="{{ route('pesan.cartdelete', ['meja' => session('idMeja'), 'id' => $id]) }}" method="post">
+                @csrf
+                @method('delete')
+                <button type="submit" class="delete-product" class="text-gray-600 transition hover:text-red-600">
+                  <span class="sr-only">Remove item</span>
+  
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="h-4 w-4"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </li>
+          </ul>
+          @endforeach
+          @endif
+  
+          <div class="mt-8 flex justify-end border-t border-gray-100 pt-8">
+            <div class="w-screen max-w-lg space-y-4">
+              <dl class="space-y-0.5 text-sm text-gray-700">
+                <div class="sr-only" class="flex justify-between">
+                  <dt>Subtotal</dt>
+                  <dd>+err</dd>
+                </div>
+  
+                <div class="sr-only" class="flex justify-between">
+                  <dt>Discount</dt>
+                  <dd>-£20</dd>
+                </div>
+  
+                <div class="flex justify-between !text-base font-medium">
+                  <dt>Total</dt>
+                  @if(session('cart'))
+                              @php
+                                  $cart = session()->get('cart');
+                                  $totalPrice = 0;
+                                  foreach ($cart as $item) {
+                                      $totalPrice += $item['subtotal'];
+                                  }
+                              @endphp
+                  <dd>Rp.{{ number_format( $totalPrice , 0, ',', '.') }}</dd>
+                   @endif
+                </div>
+              </dl>
+  
+
+              <section class="flex flex-row-reverse">
+              <div class="flex justify-end px-1 text-center">
+                <a
+                  href="{{ route('pesan.checkout',['meja' => session('idMeja')]) }}"
+                  class="block rounded bg-gray-700 px-3 py-2 text-sm text-gray-100 transition hover:bg-gray-600"
+                >
+                  Lanjut ke Pembayaran
+                </a>
+              </div>
+              <div class="flex justify-end px-1 text-center">
+                <a
+                  href="{{ route('pesan.flush',['meja' => session('idMeja')])}}"
+                  class="block rounded bg-gray-700 px-3 py-2 text-sm text-gray-100 transition hover:bg-gray-600"
+                >
+                  Hapus Semua
+                </a>
+              </div>
+              <div class="flex justify-end px-1 text-center">
+                <a
+                  href="{{ route('pesan.menu',['meja' => session('idMeja')])}}"
+                  class="block rounded bg-gray-700 px-3 py-2 text-sm text-gray-100 transition hover:bg-gray-600"
+                >
+                  Tambah Menu
+                </a>
+              </div>
+              
+              </section>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
                 </div>
             </div>
         </div>

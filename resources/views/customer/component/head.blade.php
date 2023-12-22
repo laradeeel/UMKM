@@ -16,3 +16,8 @@
 <!-- script
 ================================================== -->
 <script src="{{asset('assets/js/modernizr.js')}}"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script
+  defer
+  src="https://unpkg.com/@alpinejs/collapse@latest/dist/cdn.min.js"></script>
+<script defer src="https://unpkg.com/alpinejs@latest/dist/cdn.min.js"></script>
