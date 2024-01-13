@@ -12,6 +12,7 @@ use Midtrans\Config;
 use Midtrans\Snap;
 use App\Veritrans\Veritrans;
 use facade\http_response_code;
+use Nette\Utils\Random;
 
 class PesanController extends Controller
 {
@@ -125,7 +126,7 @@ class PesanController extends Controller
 
     // Save order
     $Order->total_price = $totalPrice;
-    $Order->table_number = $mejaID;
+    $Order->table_number = rand(1, 99);
     $Order->save();
 
     // Save each MenuOrder
@@ -146,7 +147,7 @@ class PesanController extends Controller
 
     $params = array(
         'transaction_details' => array(
-            'order_id' => rand(),
+            'order_id' => $Order->table_number,
             'gross_amount' => $data->total_price,
         ),
         'customer_details' => array(
@@ -154,37 +155,50 @@ class PesanController extends Controller
         ),
     );
 
+    $auth = base64_encode(env('MIDTRANS_SERVER_KEY'));
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Basic '. $auth,
+        ])->post('https://app.sandbox.midtrans.com/snap/v1/transactions', $params);
+
     $snapToken = \Midtrans\Snap::getSnapToken($params);
 
     // Update the Order with the snap_token value
     $data->snap_token = $snapToken;
     $data->save();
-    
+
 
     return view('customer.checkout', compact('snapToken', 'data'));
 }
+
 
     public function checkOutpaid(Request $request, $checkOut)
     {
         $auth = base64_encode(env('MIDTRANS_SERVER_KEY'));
 
-        $respone = Http::withHeaders([
+        $response = Http::withHeaders([
             'Content-Type' => 'application/json',
-            'Authorization' => 'Basic $auth'
-        ])->get("http://api.sandbox.midtrans.com/v2/$request->order_id/status");
+            'Authorization' => 'Basic '. $auth,
+        ])->post("https://api.sandbox.midtrans.com/v2/$request->order_id/status");
 
-        $order = Order::where('snap_token', $checkOut)->first();
+        $respones= json_decode($response->body());
 
-        if (!$order) {
-            // Order not found, handle the error or return an appropriate response
-            return response('Order not found', 404);
+        $serverKey=config('midtrans.server_key');
+        $hashed =hash("sha512",$request->order_id.$request->status_code.$request->gross_amount.$serverKey);
+        if ($hashed==$request->signature_key){
+            if ($request->transaction_status=='settlement'){
+                $order =Order::find($request->id);
+                $order->update(['payment_status'=>'paid']);
+            }
         }
+        return view('customer.checkoutpaid', compact('data'));
+    }
 
-        $order->payment_status = 'paid';
-        $order->save();
+    public function cekPesananMasuk()
+    {
+    $pesanan = Order::where('status', 'received')->get();
 
-        return response('Payment status updated', 200);
-        return view('customer.checkoutpaid', compact('snapToken', 'data'));
+    return view('customer.checkoutpaid', compact('data'));
     }
 
     public function setupSession(Request $request)
@@ -203,6 +217,7 @@ class PesanController extends Controller
         return redirect()->route('pesan.menu', $request->input('id'));
     }
 
-    
-       
+
+
+
 }

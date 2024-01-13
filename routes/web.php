@@ -34,12 +34,13 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
             Route::get('/page/{meja}/menu/{id}', 'PesanController@addMenuCart')->name('pesan.add');
             Route::get('/page/{meja}/keranjang', 'PesanController@cartshow')->name('pesan.cartshow');
             Route::get('/page/{meja}/keranjang/checkout', 'PesanController@checkOut')->name('pesan.checkout');
-            Route::get('page/{meja}/keranjang/checkout/paid', 'PesanController@checkOutpaid')->name('pesan.checkoutpaid');
+            Route::get('/cekorder', 'PesanController@checkOutpaid')->name('pesan.checkoutpaid');
             Route::delete('/page/{meja}/keranjang/{id}', 'PesanController@cartdelete')->name('pesan.cartdelete');
             Route::get('/page/{meja}/flush', 'PesanController@flush')->name('pesan.flush');
             Route::get('/page/{meja}/bayar', 'PesanController@test')->name('pesan.test');
             Route::post('/page/{meja}/bayar', 'PesanController@bayar')->name('pesan.bayar');
-            
+            Route::post('/midtrans/callback', ['PesanController@midtransCallback'])->name('psean.midtranscallback');
+            Route::get('/cek-pesanan', ['PesanController@cekPesananMasuk'])->name('pesan.cekPesananMasuk');;
         });
 
         Route::get('/', 'AdminController@show')->name('admin.show');

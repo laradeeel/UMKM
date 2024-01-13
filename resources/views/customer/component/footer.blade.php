@@ -44,18 +44,28 @@
 
             snap.pay('{{ $snapToken }}', {
                 // Optional
-                onSuccess: function(result){
-                        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                    },
-                    // Optional
-                    onPending: function(result){
-                        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                    },
-                    // Optional
-                    onError: function(result){
-                      document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                    }
+                onSuccess: function(result) {
+                    /* You may add your own implementation here */
+
+                    console.log(result);
+                    window.location.href = '/midtrans/callback';
+                },
+                onPending: function(result) {
+                    /* You may add your own implementation here */
+
+                    console.log(result);
+                },
+                onError: function(result) {
+                    /* You may add your own implementation here */
+
+                    console.log(result);
+                },
+                onClose: function() {
+                    /* You may add your own implementation here */
+                    alert('you closed the popup without finishing the payment');
+                }
             });
         });
     </script>
 @endif
+
